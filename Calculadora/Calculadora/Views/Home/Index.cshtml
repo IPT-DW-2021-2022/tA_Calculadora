@@ -8,6 +8,11 @@
 </div>
 
 <form method="post">
+    <!-- linha de comentário, em HTML: vai aparecer no browser -->
+    @* esta linha de comentário é do RAZOR : não é visível no browser  *@
+    <input type="hidden" name="primeiroOperando" value="@ViewBag.PrimeiroOperando" />
+    <input type="hidden" name="operador" value="@ViewBag.Operador" />
+
 
 
   <table border="0"
