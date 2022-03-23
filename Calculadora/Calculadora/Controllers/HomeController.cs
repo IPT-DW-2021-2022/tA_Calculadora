@@ -25,10 +25,11 @@ namespace Calculadora.Controllers {
 
       [HttpPost] // só qd o formulário for submetido em 'post' ele será acionado
       public IActionResult Index(
-         string botao, 
+         string botao,
          string visor,
          string primeiroOperando,
-         string operador
+         string operador,
+         string limpaEcra
          ) {
 
          // testar valor do 'botao'
@@ -44,8 +45,9 @@ namespace Calculadora.Controllers {
             case "9":
             case "0":
                // pressionei um algarismo
-               if (visor == "0") { visor = botao; }
+               if (limpaEcra == "sim" || visor == "0") { visor = botao; }
                else { visor = visor + botao; }
+               limpaEcra = "nao";
                // desafio: fazer em modo algébrico esta operação...
                break;
 
@@ -66,17 +68,45 @@ namespace Calculadora.Controllers {
             case "x":
             case ":":
                // foi pressionado um operador
+               if (!string.IsNullOrEmpty(operador)) {
+                  // como já é, pelo menos, a segunda vez que pressionamos um operador
+                  // agora, temos mesmo de fazer a operação algébrica
+                  double operandoUm = Convert.ToDouble(primeiroOperando.Replace(',', '.'));
+                  double operandoDois = Convert.ToDouble(visor.Replace(',', '.'));
+
+                  // var. auxiliar
+                  double resultado = 0;
+
+                  switch (operador) {
+                     case "+":
+                        resultado = operandoUm + operandoDois;
+                        break;
+                     case "-":
+                        resultado = operandoUm - operandoDois;
+                        break;
+                     case "x":
+                        resultado = operandoUm * operandoDois;
+                        break;
+                     case ":":
+                        resultado = operandoUm / operandoDois;
+                        break;
+                  }
+
+                  visor = resultado + "";
+               }
+
                primeiroOperando = visor;
                operador = botao;
+               limpaEcra = "sim";
 
                break;
-
          }
 
          // preparar dados para serem enviados à View
          ViewBag.Visor = visor;
          ViewBag.PrimeiroOperando = primeiroOperando;
          ViewBag.Operador = operador;
+         ViewBag.LimpaEcra = limpaEcra;
 
          return View();
       }
