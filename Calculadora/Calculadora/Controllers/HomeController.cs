@@ -12,7 +12,10 @@ namespace Calculadora.Controllers {
          _logger = logger;
       }
 
-
+      /// <summary>
+      /// prepara a Calculadora para ser apresentada, pela primeira vez, ao utilizador
+      /// </summary>
+      /// <returns></returns>
       [HttpGet]  // este anotador é facultativo
       public IActionResult Index() {
 
@@ -23,6 +26,15 @@ namespace Calculadora.Controllers {
       }
 
 
+      /// <summary>
+      /// prepara a Calculadora na segunda interação, e seguintes
+      /// </summary>
+      /// <param name="botao">valor do botão pressionado pelo utilizador, ao usar a calculadora</param>
+      /// <param name="visor">valor do Visor da calculadora</param>
+      /// <param name="primeiroOperando">na operação algébrica, valor do 1º operando</param>
+      /// <param name="operador">operação a ser executada</param>
+      /// <param name="limpaEcra">indica se o Visor deve ser, ou não, reiniciado</param>
+      /// <returns></returns>
       [HttpPost] // só qd o formulário for submetido em 'post' ele será acionado
       public IActionResult Index(
          string botao,
